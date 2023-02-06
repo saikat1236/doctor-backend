@@ -6,6 +6,7 @@ import {
 } from "./verifyToken.js";
 import express from "express";
 const router = express.Router();
+
 // GET USER Information
 router.get("/:id", verifyToken, async (req, res) => {
   try {
@@ -16,6 +17,7 @@ router.get("/:id", verifyToken, async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 });
+
 //UPDATE
 router.put("/:id", verifyToken, async (req, res) => {
   try {

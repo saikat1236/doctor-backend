@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
-const userSchema = mongoose.Schema(
+const doctorSchema = mongoose.Schema(
   {
     number: {
       type: String,
@@ -26,24 +26,43 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "",
     },
-    isAdmin: {
+
+    isDoctor: {
       type: Boolean,
-      default: false,
+      default: true,
     },
 
-    familymembers: {
+    Reviews: {
+      type: Array,
+      comments: [
+        {
+          type: String,
+          default: [],
+        },
+      ],
+      ratings: [
+        {
+          type: Number,
+          min: 1,
+          max: 5,
+        },
+      ],
+      default: [],
+    },
+
+    Specialist: {
+      type: String,
+      default: "",
+    },
+
+    stats: {
       type: Array,
       default: [],
     },
 
-    notification: {
+    Booking: {
       type: Array,
-      default: [],
-    },
-
-    upcomingbooking: {
-      type: Array,
-      doctorId: {
+      userId: {
         type: String,
       },
       name: {
@@ -52,12 +71,9 @@ const userSchema = mongoose.Schema(
       time: {
         type: String,
       },
-      serial: {
-        type: String,
-      },
     },
 
-    previousbooking: {
+    BookHistory: {
       type: Array,
       name: {
         type: String,
@@ -67,19 +83,14 @@ const userSchema = mongoose.Schema(
       },
     },
 
-    refer: {
-      type: Number,
-      default: Math.floor(Math.random() * (99999999 - 10000000 + 1)) + 10000000,
+    online: {
+      type: Boolean,
+      default: true,
     },
 
     gender: {
       type: String,
       default: "male",
-    },
-
-    disease: {
-      type: String,
-      default: "",
     },
 
     location: String,
@@ -88,11 +99,11 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.methods.generateJWT = function () {
+doctorSchema.methods.generateJWT = function () {
   const token = jwt.sign(
     {
       _id: this._id,
-      isAdmin: this.isAdmin,
+      isDoctor: this.isDoctor,
     },
     process.env.JWT_SCRET_KEY,
     { expiresIn: "365d" }
@@ -100,5 +111,5 @@ userSchema.methods.generateJWT = function () {
   return token;
 };
 
-const User = mongoose.model("User", userSchema);
-export default User;
+const Doctor = mongoose.model("Doctor", doctorSchema);
+export default Doctor;

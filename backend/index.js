@@ -19,6 +19,11 @@ import { fileURLToPath } from "url";
 import authRouter from "./routes/user.js";
 import userRouter from "./routes/updateuser.js";
 
+import docauth from "./routes/doctor.js";
+import doctorRouter from "./routes/updatedDoc.js";
+
+import orderRoute from "./routes/order.js";
+
 // configuration.. (MiddleWare: Function are running).
 
 const __filename = fileURLToPath(import.meta.url);
@@ -34,8 +39,16 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
+// Client Side
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+
+// DoctorSide
+app.use("/api/docauth", docauth);
+app.use("/api/doctor", doctorRouter);
+
+// Order
+app.use("/api/order", orderRoute);
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;

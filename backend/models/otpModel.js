@@ -15,6 +15,7 @@ const otpSchema = mongoose.Schema(
     createdAt: { type: Date, default: Date.now, index: { expires: 300 } },
     // After 5 minutes it deleted automatically from the database
   },
+
   { timestamps: true }
 );
 
