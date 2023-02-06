@@ -13,7 +13,9 @@ export const signUp = async (req, res) => {
     const user = await User.findOne({
       number: req.body.number,
     });
-    if (user) return res.status(200).send("User Already Exits");
+
+    if (user) return res.status(200).send("1");
+
     const { number } = req.body;
     const OTP = otpGenerator.generate(4, {
       digits: true,
@@ -45,7 +47,7 @@ export const signUp = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     otp.otp = await bcrypt.hash(otp.otp, salt);
     const result = await otp.save();
-    return res.status(200).send("OTP send Successfully");
+    return res.status(200).send("0");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
