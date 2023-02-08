@@ -71,6 +71,9 @@ const doctorSchema = mongoose.Schema(
       time: {
         type: String,
       },
+      price: {
+        type: String,
+      },
     },
 
     TodayBooking: {
@@ -82,6 +85,9 @@ const doctorSchema = mongoose.Schema(
         type: String,
       },
       time: {
+        type: String,
+      },
+      price: {
         type: String,
       },
     },

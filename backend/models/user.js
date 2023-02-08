@@ -55,6 +55,9 @@ const userSchema = mongoose.Schema(
       serial: {
         type: String,
       },
+      price: {
+        type: String,
+      },
     },
 
     previousbooking: {
@@ -66,6 +69,9 @@ const userSchema = mongoose.Schema(
         type: String,
       },
       time: {
+        type: String,
+      },
+      price: {
         type: String,
       },
     },

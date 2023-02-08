@@ -22,6 +22,7 @@ router.post("/", verifyToken, async (req, res) => {
     // console.log(user);
     // console.log(doctor);
     const time = savedOrder.date;
+    const Amount = savedOrder.amount;
 
     // let time = new Date(Date.parse(Stime, "dd-MM-yyyy"));
 
@@ -50,6 +51,7 @@ router.post("/", verifyToken, async (req, res) => {
       name: doctor.name,
       time: time,
       serial: serialNo + 1,
+      price: Amount,
     };
 
     if (serialNo < 2) {
@@ -68,9 +70,10 @@ router.post("/", verifyToken, async (req, res) => {
       userId: user._id,
       name: user.name,
       time: time,
+      price: Amount,
     };
     console.log("serialNo is  " + serialNo);
-    if (serialNo < 2) {
+    if (serialNo < 5) {
       Doctor.findByIdAndUpdate(
         doctor._id,
         {
@@ -82,7 +85,7 @@ router.post("/", verifyToken, async (req, res) => {
       );
     }
 
-    if (serialNo < 2) {
+    if (serialNo < 5) {
       const newOrder = await savedOrder.save();
 
       res.status(200).json(newOrder);
