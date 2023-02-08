@@ -13,7 +13,7 @@ export const signUp = async (req, res) => {
     const doctor = await Doctor.findOne({
       number: req.body.number,
     });
-    if (doctor) return res.status(200).send("Doctor Already Exits");
+    if (doctor) return res.status(200).send();
     const { number } = req.body;
     const OTP = otpGenerator.generate(4, {
       digits: true,
@@ -45,7 +45,7 @@ export const signUp = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     otp.otp = await bcrypt.hash(otp.otp, salt);
     const result = await otp.save();
-    return res.status(200).send("OTP send Successfully");
+    return res.status(200).send(OTP);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
