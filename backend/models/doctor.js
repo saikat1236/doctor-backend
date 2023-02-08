@@ -73,6 +73,19 @@ const doctorSchema = mongoose.Schema(
       },
     },
 
+    TodayBooking: {
+      type: Array,
+      userId: {
+        type: String,
+      },
+      name: {
+        type: String,
+      },
+      time: {
+        type: String,
+      },
+    },
+
     BookHistory: {
       type: Array,
       name: {

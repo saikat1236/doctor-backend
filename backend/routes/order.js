@@ -13,11 +13,9 @@ const router = express.Router();
 //CREATE
 
 router.post("/", verifyToken, async (req, res) => {
-  const newOrder = new Order(req.body);
+  const savedOrder = new Order(req.body);
 
   try {
-    const savedOrder = await newOrder.save();
-
     const user = await User.findById(savedOrder.userId);
     const doctor = await Doctor.findById(savedOrder.doctorId);
 
@@ -51,7 +49,7 @@ router.post("/", verifyToken, async (req, res) => {
       doctorId: doctor._id,
       name: doctor.name,
       time: time,
-      serial: 0,
+      serial: serialNo + 1,
     };
 
     if (serialNo < 2) {
@@ -84,62 +82,10 @@ router.post("/", verifyToken, async (req, res) => {
       );
     }
 
-    // let booking = {
-    //   userId: user._id,
-    //   name: user.name,
-    //   date: time,
-    // };
-
-    // Doctor.findById(doctor._id, (err, doctor) => {
-    //   if (err) {
-    //     console.error(err);
-    //   } else {
-    //     doctor.Booking.push(newBooking);
-    //     doctor.save((err, updatedDoctor) => {
-    //       if (err) {
-    //         console.error(err);
-    //       } else {
-    //         console.log("New booking added to Doctor:", updatedDoctor);
-    //       }
-    //     });
-    //   }
-    // });
-
-    // Doctor.findByIdAndUpdate(doctor._id, function (err, doctor) {
-    //   if (err) {
-    //     return handleError(err + " Firstline");
-    //   }
-
-    //   doctor.Booking.push(booking);
-
-    //   doctor.validate(function (err) {
-    //     if (err) {
-    //       return handleError(err + " Secondline");
-    //     }
-    //     doctor.save(function (err) {
-    //       if (err) {
-    //         return handleError(err + " Thirdline");
-    //       }
-    //       // Handle successful booking
-    //     });
-    //   });
-    // });
-
-    // Doctor.findOne(
-    //   doctor._id,
-    //   { $push: { Booking: newBooking } },
-    //   { new: true },
-    //   (err, doctor) => {
-    //     if (err) {
-    //       console.error(err);
-    //     } else {
-    //       console.log("New booking added to Doctor:", doctor);
-    //     }
-    //   }
-    // );
-
     if (serialNo < 2) {
-      res.status(200).json(savedOrder);
+      const newOrder = await savedOrder.save();
+
+      res.status(200).json(newOrder);
     } else {
       res.status(401).json("Order not done");
     }

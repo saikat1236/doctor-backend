@@ -44,6 +44,61 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
+// Get the Upcoming Booking
+router.get("/upcomingbooking/:id", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    const upcomingBooking = user.upcomingbooking;
+    console.log(upcomingBooking);
+    res.status(200).send(upcomingBooking);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Get The Booking History
+
+router.get("/bookinghistory/:id", verifyToken, async (req, res) => {
+  try {
+    // To get the yesterday
+
+    const user = await User.findById(req.params.id);
+
+    const upcomingBooking = user.upcomingbooking;
+    const previousbooking = user.previousbooking;
+    let today = new Date();
+    let yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    let date = yesterday;
+    let day = date.getDate().toString().padStart(2, "0");
+    let month = (date.getMonth() + 1).toString().padStart(2, "0");
+    let year = date.getFullYear();
+    let formattedDate = `${day}-${month}-${year}`;
+
+    for (let i = 0; i < upcomingBooking.length; i++) {
+      const booking = upcomingBooking[i];
+      if (booking.time === formattedDate) {
+        previousbooking.push({
+          doctorId: booking.doctorId,
+          name: booking.name,
+          time: booking.time,
+        });
+        upcomingBooking.splice(i, 1);
+        i--;
+      }
+    }
+
+    //   if (Booking[i].time === formattedDate)
+    console.log(upcomingBooking);
+    console.log(previousbooking);
+    await user.save();
+    res.status(200).send(previousbooking);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 //GET USER
 router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   try {

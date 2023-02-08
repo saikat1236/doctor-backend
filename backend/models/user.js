@@ -59,6 +59,9 @@ const userSchema = mongoose.Schema(
 
     previousbooking: {
       type: Array,
+      doctorId: {
+        type: String,
+      },
       name: {
         type: String,
       },
