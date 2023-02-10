@@ -77,16 +77,18 @@ router.get("/todaycount/:id", verifydocToken, async (req, res) => {
     console.log(str);
 
     // res.status(200).send(str);
-    res.status(200).send(Todaybooking);
+    res.status(200).send(str);
   } catch (error) {
     res.status(500).json(error);
   }
 });
+// Get next patient
+// router.post("/nextpatent/:id", verifyToken, async (req, res) => {});
 
 // Get All doctor Information
 router.get("/", async (req, res) => {
   const qNew = req.query.new;
-  const qCategory = req.query.category;
+  const qCategory = req.query.Specialist;
   try {
     let doctor;
 
@@ -94,12 +96,13 @@ router.get("/", async (req, res) => {
       doctor = await Doctor.find().sort({ createdAt: -1 }).limit(1);
     } else if (qCategory) {
       doctor = await Doctor.find({
-        categories: {
+        Specialist: {
           $in: [qCategory],
         },
+        online: true,
       });
     } else {
-      doctor = await Doctor.find();
+      doctor = await Doctor.find({ online: true });
     }
 
     res.status(200).json(doctor);

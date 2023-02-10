@@ -99,9 +99,6 @@ router.get("/bookinghistory/:id", verifyToken, async (req, res) => {
   }
 });
 
-// Get next patient
-router.post("/nextpatent/:id", verifyToken, async (req, res) => {});
-
 //GET USER
 router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
