@@ -8,7 +8,7 @@ import express from "express";
 const router = express.Router();
 
 // GET USER Information
-router.get("/:id", verifyToken, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -19,7 +19,7 @@ router.get("/:id", verifyToken, async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -35,7 +35,7 @@ router.put("/:id", verifyToken, async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User has been deleted...");
@@ -45,7 +45,7 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 // Get the Upcoming Booking
-router.get("/upcomingbooking/:id", verifyToken, async (req, res) => {
+router.get("/upcomingbooking/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -59,7 +59,7 @@ router.get("/upcomingbooking/:id", verifyToken, async (req, res) => {
 
 // Get The Booking History
 
-router.get("/bookinghistory/:id", verifyToken, async (req, res) => {
+router.get("/bookinghistory/:id", async (req, res) => {
   try {
     // To get the yesterday
 
@@ -100,7 +100,7 @@ router.get("/bookinghistory/:id", verifyToken, async (req, res) => {
 });
 
 //GET USER
-router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+router.get("/find/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { password, ...others } = user._doc;
@@ -111,7 +111,7 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET ALL USER
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   const query = req.query.new; // For query
   try {
     const users = query
@@ -125,7 +125,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 
 //GET USER STATS
 
-router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
+router.get("/stats", async (req, res) => {
   const date = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
 

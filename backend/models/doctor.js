@@ -94,6 +94,9 @@ const doctorSchema = mongoose.Schema(
 
     BookHistory: {
       type: Array,
+      userId: {
+        type: String,
+      },
       name: {
         type: String,
       },

@@ -1,11 +1,13 @@
 import Doctor from "../models/doctor.js";
+import User from "../models/user.js";
 import { verifydocToken, verifyTokenAndAuthorization } from "./verifyDoc.js";
 import express from "express";
+
 const router = express.Router();
 
 // GET Dcotor Information
 
-router.get("/:id", verifydocToken, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const doctor = await Doctor.findById(id);
@@ -16,7 +18,7 @@ router.get("/:id", verifydocToken, async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifydocToken, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updatedUser = await Doctor.findByIdAndUpdate(
       req.params.id,
@@ -32,7 +34,7 @@ router.put("/:id", verifydocToken, async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const doctor = await Doctor.findById(id);
@@ -47,7 +49,7 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 // Get Today's patient Count
-router.get("/todaycount/:id", verifydocToken, async (req, res) => {
+router.get("/todaycount/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const doctor = await Doctor.findById(id);
@@ -82,8 +84,56 @@ router.get("/todaycount/:id", verifydocToken, async (req, res) => {
     res.status(500).json(error);
   }
 });
+
 // Get next patient
-// router.post("/nextpatent/:id", verifyToken, async (req, res) => {});
+router.get("/nextpatent/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doctor = await Doctor.findById(id);
+    // console.log(doctor);
+
+    const TodayBooking = doctor.TodayBooking;
+    const BookingHistory = doctor.BookHistory;
+
+    const poppedElement = TodayBooking.shift();
+
+    BookingHistory.push({
+      userId: poppedElement.userId,
+      name: poppedElement.name,
+      time: poppedElement.time,
+    });
+    const userId = poppedElement.userId;
+    const user = await User.findById(userId);
+
+    const upcomingBooking = user.upcomingbooking;
+    const previousbooking = user.previousbooking;
+
+    for (let i = 0; i < upcomingBooking.length; i++) {
+      const booking = upcomingBooking[i];
+      console.log("Doctor id " + booking.doctorId);
+      console.log("Get Doctor id " + doctor._id);
+      if (booking.doctorId === doctor._id) {
+        previousbooking.push({
+          doctorId: booking.doctorId,
+          name: booking.name,
+          time: booking.time,
+        });
+        upcomingBooking.splice(i, 1);
+        i--;
+        break;
+      }
+    }
+
+    await doctor.save();
+    await user.save();
+
+    const remainng = TodayBooking.length;
+    const remainpatient = remainng.toString();
+    res.status(200).json(remainpatient);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 // Get All doctor Information
 router.get("/", async (req, res) => {

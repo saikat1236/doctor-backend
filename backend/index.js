@@ -38,13 +38,25 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+// File Storage..
+
+const Storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/assets"); //When some one upload a file it will store a in this directory.
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ Storage });
 
 // Client Side
-app.use("/api/auth", authRouter);
+app.use("/api/auth", upload.single("picture"), authRouter);
 app.use("/api/user", userRouter);
 
 // DoctorSide
-app.use("/api/docauth", docauth);
+app.use("/api/docauth", upload.single("picture"), docauth);
 app.use("/api/doctor", doctorRouter);
 
 // Order

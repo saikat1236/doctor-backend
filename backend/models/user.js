@@ -5,9 +5,7 @@ const userSchema = mongoose.Schema(
   {
     number: {
       type: String,
-      required: true,
-      unique: true,
-      index: true,
+      default: "",
     },
 
     name: {
@@ -20,9 +18,14 @@ const userSchema = mongoose.Schema(
       type: String,
       max: 50,
       index: true,
+      unique: true,
     },
 
     picturePath: {
+      type: String,
+      default: "",
+    },
+    password: {
       type: String,
       default: "",
     },
@@ -97,17 +100,17 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.methods.generateJWT = function () {
-  const token = jwt.sign(
-    {
-      _id: this._id,
-      isAdmin: this.isAdmin,
-    },
-    process.env.JWT_SCRET_KEY,
-    { expiresIn: "365d" }
-  );
-  return token;
-};
+// userSchema.methods.generateJWT = function () {
+//   const token = jwt.sign(
+//     {
+//       _id: this._id,
+//       isAdmin: this.isAdmin,
+//     },
+//     process.env.JWT_SCRET_KEY,
+//     { expiresIn: "365d" }
+//   );
+//   return token;
+// };
 
 const User = mongoose.model("User", userSchema);
 export default User;
