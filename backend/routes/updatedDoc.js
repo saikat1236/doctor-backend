@@ -33,6 +33,22 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// User update Reviews
+// router.put("/:id", async (req, res) => {
+//   try {
+//     const updatedUser = await Doctor.findByIdAndUpdate(
+//       req.params.id,
+//       {
+//         $set: req.body,
+//       },
+//       { new: true }
+//     );
+//     res.status(200).json(updatedUser); // Return the output
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
 //DELETE
 router.delete("/:id", async (req, res) => {
   try {
@@ -107,7 +123,7 @@ router.get("/nextpatent/:id", async (req, res) => {
 
     const upcomingBooking = user.upcomingbooking;
     const previousbooking = user.previousbooking;
-
+    console.log("Previos Bokking" + previousbooking);
     for (let i = 0; i < upcomingBooking.length; i++) {
       const booking = upcomingBooking[i];
       console.log("Doctor id " + booking.doctorId);
@@ -117,6 +133,7 @@ router.get("/nextpatent/:id", async (req, res) => {
           doctorId: booking.doctorId,
           name: booking.name,
           time: booking.time,
+          price: booking.price,
         });
         upcomingBooking.splice(i, 1);
         i--;

@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
   try {
     const user = await User.findById(savedOrder.userId);
     const doctor = await Doctor.findById(savedOrder.doctorId);
+    const orderId = savedOrder._id;
 
     // console.log(user);
     // console.log(doctor);
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
     }
 
     let noti = "This is message";
-    if (serialNo < 2) {
+    if (serialNo < 20) {
       User.findByIdAndUpdate(
         user._id,
         {
@@ -52,9 +53,10 @@ router.post("/", async (req, res) => {
       time: time,
       serial: serialNo + 1,
       price: Amount,
+      orderId: orderId,
     };
 
-    if (serialNo < 2) {
+    if (serialNo < 20) {
       User.findByIdAndUpdate(
         user._id,
         {
@@ -73,7 +75,7 @@ router.post("/", async (req, res) => {
       price: Amount,
     };
     console.log("serialNo is  " + serialNo);
-    if (serialNo < 5) {
+    if (serialNo < 20) {
       Doctor.findByIdAndUpdate(
         doctor._id,
         {
@@ -85,7 +87,7 @@ router.post("/", async (req, res) => {
       );
     }
 
-    if (serialNo < 5) {
+    if (serialNo < 20) {
       const newOrder = await savedOrder.save();
 
       res.status(200).json(newOrder);

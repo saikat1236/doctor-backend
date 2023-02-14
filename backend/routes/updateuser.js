@@ -83,6 +83,7 @@ router.get("/bookinghistory/:id", async (req, res) => {
           doctorId: booking.doctorId,
           name: booking.name,
           time: booking.time,
+          price: booking.price,
         });
         upcomingBooking.splice(i, 1);
         i--;
@@ -90,7 +91,7 @@ router.get("/bookinghistory/:id", async (req, res) => {
     }
 
     //   if (Booking[i].time === formattedDate)
-    console.log(upcomingBooking);
+    // console.log(upcomingBooking);
     console.log(previousbooking);
     await user.save();
     res.status(200).send(previousbooking);

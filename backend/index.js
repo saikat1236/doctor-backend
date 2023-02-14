@@ -8,13 +8,6 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-// Second part..
-// import authRoutes from "./routes/auth.js"; // Authentification...
-// import userRoutes from "./routes/user.js";
-// import postRoutes from "./routes/posts.js";
-// import { register } from "./controller/auth.js";
-// import { createPost } from "./controller/posts.js";
-// import { verifyToken } from "./middleware/auth.js";
 
 import authRouter from "./routes/user.js";
 import userRouter from "./routes/updateuser.js";

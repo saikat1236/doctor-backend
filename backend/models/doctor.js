@@ -3,23 +3,28 @@ import jwt from "jsonwebtoken";
 
 const doctorSchema = mongoose.Schema(
   {
-    number: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-    },
-
     name: {
       type: String,
       min: 2,
       max: 50,
     },
-
+    address: {
+      type: String,
+      default: "",
+    },
+    amount: {
+      type: String,
+      default: "",
+    },
     email: {
       type: String,
       max: 50,
+      unique: true,
       index: true,
+    },
+    password: {
+      type: String,
+      default: "medikas",
     },
 
     picturePath: {
@@ -57,7 +62,26 @@ const doctorSchema = mongoose.Schema(
 
     stats: {
       type: Array,
-      default: [],
+      studied: {
+        type: String,
+        default: "",
+      },
+      experience: {
+        type: String,
+        default: "",
+      },
+      number: {
+        type: String,
+        default: "",
+      },
+      off: {
+        type: String,
+        default: "",
+      },
+      patientcount: {
+        type: String,
+        default: "",
+      },
     },
 
     Booking: {
