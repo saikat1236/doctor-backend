@@ -19,8 +19,8 @@ const doctorSchema = mongoose.Schema(
     email: {
       type: String,
       max: 50,
-      unique: true,
       index: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -89,6 +89,9 @@ const doctorSchema = mongoose.Schema(
       userId: {
         type: String,
       },
+      orderId: {
+        type: String,
+      },
       name: {
         type: String,
       },
@@ -105,6 +108,9 @@ const doctorSchema = mongoose.Schema(
       userId: {
         type: String,
       },
+      orderId: {
+        type: String,
+      },
       name: {
         type: String,
       },
@@ -119,6 +125,9 @@ const doctorSchema = mongoose.Schema(
     BookHistory: {
       type: Array,
       userId: {
+        type: String,
+      },
+      orderId: {
         type: String,
       },
       name: {
@@ -145,17 +154,17 @@ const doctorSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-doctorSchema.methods.generateJWT = function () {
-  const token = jwt.sign(
-    {
-      _id: this._id,
-      isDoctor: this.isDoctor,
-    },
-    process.env.JWT_SCRET_KEY,
-    { expiresIn: "365d" }
-  );
-  return token;
-};
+// doctorSchema.methods.generateJWT = function () {
+//   const token = jwt.sign(
+//     {
+//       _id: this._id,
+//       isDoctor: this.isDoctor,
+//     },
+//     process.env.JWT_SCRET_KEY,
+//     { expiresIn: "365d" }
+//   );
+//   return token;
+// };
 
 const Doctor = mongoose.model("Doctor", doctorSchema);
 export default Doctor;

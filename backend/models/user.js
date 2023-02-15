@@ -80,6 +80,9 @@ const userSchema = mongoose.Schema(
       price: {
         type: String,
       },
+      orderId: {
+        type: String,
+      },
     },
 
     refer: {

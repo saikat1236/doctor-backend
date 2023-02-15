@@ -117,6 +117,7 @@ router.get("/nextpatent/:id", async (req, res) => {
       userId: poppedElement.userId,
       name: poppedElement.name,
       time: poppedElement.time,
+      orderId: poppedElement.orderId,
     });
     const userId = poppedElement.userId;
     const user = await User.findById(userId);
@@ -124,11 +125,13 @@ router.get("/nextpatent/:id", async (req, res) => {
     const upcomingBooking = user.upcomingbooking;
     const previousbooking = user.previousbooking;
     console.log("Previos Bokking" + previousbooking);
+
     for (let i = 0; i < upcomingBooking.length; i++) {
       const booking = upcomingBooking[i];
-      console.log("Doctor id " + booking.doctorId);
-      console.log("Get Doctor id " + doctor._id);
-      if (booking.doctorId === doctor._id) {
+      console.log("Doctor id " + booking.orderId);
+      console.log("Get Doctor id " + poppedElement.orderId);
+      console.log(" ");
+      if (booking.orderId === poppedElement) {
         previousbooking.push({
           doctorId: booking.doctorId,
           name: booking.name,
@@ -144,9 +147,9 @@ router.get("/nextpatent/:id", async (req, res) => {
     await doctor.save();
     await user.save();
 
-    const remainng = TodayBooking.length;
-    const remainpatient = remainng.toString();
-    res.status(200).json(remainpatient);
+    // const remainng = TodayBooking.length;
+    // const remainpatient = remainng.toString();
+    res.status(200).json(previousbooking);
   } catch (error) {
     res.status(500).json(error);
   }
